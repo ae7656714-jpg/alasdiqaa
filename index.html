@@ -136,6 +136,16 @@ body.hc .toast{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .card .tag{color:color-mix(in srgb,var(--c) 50%,#fff)}}
 :root[data-theme="dark"] .card .tag{color:color-mix(in srgb,var(--c) 50%,#fff)}
 @media(max-width:760px){.brand b{font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand img{height:42px}.bar{padding:8px 10px}#lg{padding:6px 9px;font-size:.82rem}#cb{white-space:nowrap;padding:8px 10px;display:inline-flex;align-items:center}.logo{max-width:230px}.hwa .hl{display:none}.hwa{padding:8px 10px}.bar{gap:8px}.hero .btns .btn{flex:1 1 100%}.ct{padding:20px}.cta2,.cta2 .btn{width:100%}}
+
+/* Product cards: clear, floating product presentation */
+.product-open{display:block;color:inherit;text-decoration:none;border-radius:10px;cursor:pointer}
+.product-open h3{margin:5px 0 2px;transition:color .18s}
+.product-open:hover h3{color:var(--g)}
+.pi{height:205px;object-fit:contain;background:transparent;border-radius:8px;mix-blend-mode:multiply;filter:drop-shadow(0 14px 9px rgba(0,0,0,.18));animation:productFloat 4.2s ease-in-out infinite}
+.placeholder-product{display:grid;place-items:center;font-size:3.5rem;mix-blend-mode:normal;filter:none;background:linear-gradient(160deg,#f6fbf3,#fff)}
+.detail-hint{display:block;font-size:.78rem;color:var(--mut);margin-top:2px}
+@keyframes productFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@media(prefers-reduced-motion:reduce){.pi{animation:none}}
 </style></head><body>
 <header><div class="bar">
 <a class="brand" href="#home"><img src="logo-icon.jpg" alt="الأصدقاء للتجارة والتوريدات" width="70" height="54"><span><b data-t="brand"></b><small data-t="brand2"></small></span></a>
@@ -196,7 +206,7 @@ const norm=s=>String(s).toLowerCase().replace(/[\u064B-\u065F\u0640]/g,'').repla
 
 const stepper=(id,n)=>`<div class="qty"><button data-dec="${id}" aria-label="−">−</button><b>${n}</b><button data-inc="${id}" aria-label="+">+</button></div>`;
 function card(p){const n=cart[p.id]||0;
-return `<article class="card" style="--c:${COL[p.c]}"><small class="tag">${CATS[p.c][lang]}</small>${p.im?`<img class="pi" src="${esc(p.im)}" alt="" loading="lazy">`:''}<h3 class="ar" dir="auto">${esc(nm(p))}</h3>${p.a?`<p class="ing"><span>${t('ing')}</span><span class="ar" dir="auto">${esc(p.a)}</span></p>`:''}${p.k?`<p class="ctn">${t('ctn')}: <b>${p.k}</b></p>`:''}<div class="buy"><div class="price">${fmt(p.p)} <small>${cur()}</small></div>${n?stepper(p.id,n):`<button class="btn" data-add="${p.id}">${t('add')}</button>`}</div></article>`}
+return `<article class="card" style="--c:${COL[p.c]}"><a class="product-open" href="product.html?id=${p.id}" aria-label="${esc(nm(p))}"><small class="tag">${CATS[p.c][lang]}</small>${p.im?`<img class="pi" src="${esc(p.im)}" alt="${esc(nm(p))}" loading="lazy">`:`<div class="pi placeholder-product" aria-hidden="true">🌱</div>`}<h3 class="ar" dir="auto">${esc(nm(p))}</h3><span class="detail-hint">${lang==='ar'?'عرض تفاصيل المنتج ←':'View product details →'}</span></a>${p.a?`<p class="ing"><span>${t('ing')}</span><span class="ar" dir="auto">${esc(p.a)}</span></p>`:''}${p.k?`<p class="ctn">${t('ctn')}: <b>${p.k}</b></p>`:''}<div class="buy"><div class="price">${fmt(p.p)} <small>${cur()}</small></div>${n?stepper(p.id,n):`<button class="btn" data-add="${p.id}">${t('add')}</button>`}</div></article>`}
 function renderCats(){$('#cats').innerHTML=CATS.map((c,i)=>`<button class="cat${cat===i?' on':''}" data-cat="${i}" style="--c:${COL[i]}"><span class="ic">${c.i}</span><span><b>${c[lang]}</b><small>${P.filter(p=>p.c===i).length} ${t('items')}</small></span></button>`).join('')}
 function renderProducts(){const l=P.filter(p=>(cat<0||p.c===cat)&&(!q||p.s.includes(q)));
 $('#count').textContent=l.length+' '+t('items');
