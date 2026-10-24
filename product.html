@@ -29,31 +29,6 @@ const lang=(()=>{try{return localStorage.getItem('lang')==='"en"'?'en':(JSON.par
 const names=[
 ['مكافحة الحشرات العامة','General Insect Control'],['مكافحة الثاقب والماص والتوتا أبسلوتا','Borers, Sucking Pests & Tuta absoluta'],['مكافحة العناكب والأكاروسات','Spider Mites & Acarids Control'],['مكافحة النيماتودا','Nematode Control'],['مكافحة الأمراض الفطرية','Fungal Disease Control'],['المخصبات','Fertilizers & Nutrients'],['الحشائش','Weed Control']];
 const money=n=>Number(n).toLocaleString('en-US'),wa='https://wa.me/201127553859';
-const categoryGuides={
-ar:[
-'يندرج هذا المنتج ضمن منتجات مكافحة الحشرات العامة. راجع ملصق العبوة لتحديد الآفات والمحاصيل المسجلة لهذا المنتج تحديدًا قبل الاستخدام.',
-'يندرج هذا المنتج ضمن منتجات مكافحة بعض الآفات الثاقبة والماصة والتوتا أبسلوتا. تختلف الآفات والمحاصيل المسجلة باختلاف المنتج، لذلك يُرجى مراجعة الملصق المعتمد.',
-'يندرج هذا المنتج ضمن قسم مكافحة العناكب والأكاروسات. لا تعتمد على اسم القسم وحده لتحديد الآفة المستهدفة؛ اتبع بيانات التسجيل وملصق العبوة.',
-'يندرج هذا المنتج ضمن قسم منتجات مكافحة النيماتودا. يجب مراجعة ملصق المنتج للتأكد من المحاصيل والاستخدامات المسجلة وطريقة التطبيق المعتمدة.',
-'يندرج هذا المنتج ضمن قسم مكافحة الأمراض الفطرية. حدّد المرض والمحصول من الملصق المعتمد، والتزم بتعليمات الاستخدام والاحتياطات المدونة على العبوة.',
-'يندرج هذا المنتج ضمن قسم المخصبات والعناصر الغذائية. راجع التركيب المسجل وملصق العبوة لتحديد ملاءمته لاحتياجات المحصول وطريقة الاستخدام الموصى بها.',
-'يندرج هذا المنتج ضمن قسم مكافحة الحشائش. تختلف الحشائش والمحاصيل المسجلة من منتج لآخر؛ لا تستخدمه إلا وفق الملصق والتعليمات المعتمدة.'
-],
-en:[
-'This item is listed under general insect-control products. Check its own label for the registered target pests and crops before use.',
-'This item is listed under products for certain borers, sucking pests and Tuta absoluta. Registered targets and crops vary by product; consult its approved label.',
-'This item is listed under spider-mite and acarid control. Do not infer the target pest from the category alone; follow the product registration and label.',
-'This item is listed under nematode-control products. Check the label for registered crops, uses and approved application instructions.',
-'This item is listed under fungal-disease control. Confirm the disease and crop on the approved label and follow all use and safety directions.',
-'This item is listed under fertilizers and nutrients. Review the recorded composition and product label to assess suitability and recommended use.',
-'This item is listed under weed-control products. Registered weeds and crops differ by product; use only according to the approved label.'
-]};
-const makeDescription=(p,category,en)=>{
-const guide=(categoryGuides[en?'en':'ar'][p.c]||[]).toString();
-const composition=p.a?(en?'The catalogue lists this composition: ':'التركيب المسجل في الكتالوج لهذا المنتج: ')+p.a+'.':'';
-const lead=en?('This page is dedicated to '+p.n+'. It shows the current catalogue price and pack information for this exact item.'):('هذه الصفحة مخصصة لمنتج '+p.n+' تحديدًا، وتعرض السعر وبيانات العبوة المسجلة لهذا الصنف.');
-return [lead,composition,guide].filter(Boolean).join(' ');
-};
 async function init(){try{
 const res=await fetch('index.html',{cache:'no-store'});if(!res.ok)throw 0;const source=await res.text();const match=source.match(/const DATA=(\[[\s\S]*?\]);\s*const CFG=/);if(!match)throw 0;
 const products=JSON.parse(match[1]);const p=products.find(x=>x.id===id);if(!p)throw 0;
@@ -61,8 +36,8 @@ const en=lang==='en',title=en&&p.ne?p.ne:p.n,category=names[p.c]?.[en?1:0]||'';
 document.documentElement.lang=en?'en':'ar';document.documentElement.dir=en?'ltr':'rtl';document.title=title+' | '+(en?'Al Asdiqaa':'الأصدقاء');
 $('#backTop').textContent=en?'Back to products':'العودة للمنتجات';
 const composition=p.a|| (en?'No active ingredients are listed for this item.':'لا توجد مواد فعالة مسجلة لهذا المنتج في الكتالوج.');
-const intro=makeDescription(p,category,en);
-$('#content').innerHTML='<a class="back" href="index.html#products">← '+(en?'All products':'كل المنتجات')+'</a><div class="layout"><div class="visual">'+(p.im?'<img src="'+esc(p.im)+'" alt="'+esc(title)+'">':'<div class="noimg" aria-hidden="true">🌱</div>')+'</div><section><span class="kicker">'+esc(category)+'</span><h1>'+esc(title)+'</h1><p class="sub">'+intro+'</p><div class="price">'+money(p.p)+' <small>'+(en?'EGP':'ج.م')+'</small></div><div class="facts"><div class="fact"><small>'+(en?'Category':'القسم')+'</small><b>'+esc(category)+'</b></div><div class="fact"><small>'+(en?'Units per carton':'عدد العبوات في الكرتونة')+'</small><b>'+(p.k||'—')+'</b></div></div><div class="panel"><h2>'+(en?'Active ingredients / composition':'المواد الفعالة والتركيب')+'</h2><div class="composition">'+esc(composition)+'</div></div><div class="panel"><h2>'+(en?'How to use product information':'شرح المنتج ومعلومات الاستخدام')+'</h2><p style="margin:0">'+(en?'This description is based on the item name, category and composition recorded in the catalogue. It does not replace the official leaflet. Always verify the registered crop, target, application rate, timing, compatibility and safety precautions on the original label before use.':'هذا الشرح مبني على اسم المنتج والقسم والتركيب المسجل في كتالوج الموقع، ولا يُعد بديلًا عن النشرة الرسمية. قبل الاستخدام، تحقّق من المحصول والآفة أو الغرض المسجل ومعدل الاستخدام والتوقيت والتوافق والاحتياطات من ملصق العبوة الأصلي.')+'</p></div><div class="actions"><button class="btn" id="add">'+(en?'Add to cart':'أضف للسلة')+'</button><a class="btn wa" id="ask" target="_blank" rel="noopener" href="'+wa+'?text='+encodeURIComponent((en?'Hello, I would like to ask about: ':'مرحبًا، أريد الاستفسار عن المنتج: ')+title)+'">'+(en?'Ask on WhatsApp':'استفسر عبر واتساب')+'</a></div><p class="notice">'+(en?'Prices may change; confirm availability and price on WhatsApp.':'قد تتغير الأسعار؛ يُرجى تأكيد السعر والتوافر عبر واتساب.')+'</p></section></div>';
+
+$('#content').innerHTML='<a class="back" href="index.html#products">← '+(en?'All products':'كل المنتجات')+'</a><div class="layout"><div class="visual">'+(p.im?'<img src="'+esc(p.im)+'" alt="'+esc(title)+'">':'<div class="noimg" aria-hidden="true">🌱</div>')+'</div><section><span class="kicker">'+esc(category)+'</span><h1>'+esc(title)+'</h1><div class="price">'+money(p.p)+' <small>'+(en?'EGP':'ج.م')+'</small></div><div class="facts"><div class="fact"><small>'+(en?'Category':'القسم')+'</small><b>'+esc(category)+'</b></div><div class="fact"><small>'+(en?'Units per carton':'عدد العبوات في الكرتونة')+'</small><b>'+(p.k||'—')+'</b></div></div><div class="panel"><h2>'+(en?'Active ingredients / composition':'المواد الفعالة والتركيب')+'</h2><div class="composition">'+esc(composition)+'</div></div><div class="actions"><button class="btn" id="add">'+(en?'Add to cart':'أضف للسلة')+'</button><a class="btn wa" id="ask" target="_blank" rel="noopener" href="'+wa+'?text='+encodeURIComponent((en?'Hello, I would like to ask about: ':'مرحبًا، أريد الاستفسار عن المنتج: ')+title)+'">'+(en?'Ask on WhatsApp':'استفسر عبر واتساب')+'</a></div><p class="notice">'+(en?'Prices may change; confirm availability and price on WhatsApp.':'قد تتغير الأسعار؛ يُرجى تأكيد السعر والتوافر عبر واتساب.')+'</p></section></div>';
 $('#add').onclick=()=>{let cart={};try{cart=JSON.parse(localStorage.getItem('cart')||'{}')||{}}catch(e){}cart[p.id]=(Number(cart[p.id])||0)+1;try{localStorage.setItem('cart',JSON.stringify(cart))}catch(e){}location.href='index.html#products'};
 }catch(e){$('#content').innerHTML='<div class="error"><h1>لم يتم العثور على المنتج</h1><p>ارجع إلى قائمة المنتجات واختر المنتج مرة أخرى.</p><a class="btn" href="index.html#products">العودة للمنتجات</a></div>'}}
 init();
