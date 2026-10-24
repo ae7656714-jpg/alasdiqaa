@@ -141,11 +141,15 @@ body.hc .toast{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 .product-open{display:block;color:inherit;text-decoration:none;border-radius:10px;cursor:pointer}
 .product-open h3{margin:5px 0 2px;transition:color .18s}
 .product-open:hover h3{color:var(--g)}
-.pi{height:205px;object-fit:contain;object-position:center;background:transparent;border-radius:8px;mix-blend-mode:normal;filter:none;animation:none;isolation:auto;display:block}
+.pi{height:205px;width:100%;object-fit:contain;object-position:center;background:transparent;border-radius:8px;mix-blend-mode:normal;filter:none;animation:productFloat 4.2s ease-in-out infinite;isolation:auto;display:block;will-change:transform}
+.card:nth-child(3n+2) .pi{animation-delay:-1.4s}
+.card:nth-child(3n) .pi{animation-delay:-2.8s}
+.card:hover .pi{animation-duration:2.6s}
+@keyframes productFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(.6deg)}}
 .placeholder-product{display:grid;place-items:center;font-size:3.5rem;mix-blend-mode:normal;filter:none;background:linear-gradient(160deg,#f6fbf3,#fff)}
 .detail-hint{display:block;font-size:.78rem;color:var(--mut);margin-top:2px}
 @keyframes productFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-@media(prefers-reduced-motion:reduce){.pi{animation:none}}
+@media(prefers-reduced-motion:reduce){.pi{animation:none;will-change:auto}}
 /* Keep original product package artwork untouched for maximum label clarity. */
 </style></head><body>
 <header><div class="bar">
