@@ -43,7 +43,7 @@ const labelInfo={
 73:{lead:'ديكتاتور 30 – مبيد أكاروسي',use:'يذكر الملصق مكافحة الأكاروسات بما فيها العنكبوت الأحمر بمراحله المختلفة وبيض الشتاء، والأكاروسات الدقيقة وصانعات الأنفاق وحفار الساق.',effect:'تركيبة كلوروفينابير وبايريدابين. المعدل المطبوع على الملصق 100 سم³ لكل 200 لتر ماء؛ اتبع ملصق العبوة للمحصول وفترة الأمان.',ingredients:'كلوروفينابير 18% + بايريدابين 12%.'},
 80:{lead:'اكارواس جولد – مبيد حشري وأكاروسي',use:'يذكر الملصق مكافحة الأكاروسات والعناكب بمراحلها المختلفة، وسوسة النخيل، وديدان ثمار العنب والموالح، والتوتا أبسليوتا وصانعات الأنفاق والحشرات القشرية وآفات أخرى.',effect:'التركيبة المسجلة على الملصق تجمع كلورفينابير وإندوكساكارب. المعدل الظاهر 100 سم³ لكل 200 لتر ماء؛ راجع العبوة للمحصول وفترة الأمان.',ingredients:'كلورفينابير 33% + إندوكساكارب 3%.'},
 81:{lead:'اكارواس جولد – مبيد حشري وأكاروسي',use:'يذكر الملصق مكافحة الأكاروسات والعناكب بمراحلها المختلفة، وسوسة النخيل، وديدان ثمار العنب والموالح، والتوتا أبسليوتا وصانعات الأنفاق والحشرات القشرية وآفات أخرى.',effect:'التركيبة المسجلة على الملصق تجمع كلورفينابير وإندوكساكارب. المعدل الظاهر 100 سم³ لكل 200 لتر ماء؛ راجع العبوة للمحصول وفترة الأمان.',ingredients:'كلورفينابير 33% + إندوكساكارب 3%.'},
-88:{lead:'نيماجرو – مبيد نيماتودي وحشري',use:'الملصق يذكر مكافحة النيماتودا التي تصيب الجذور، والحشرات الثاقبة الماصة والتوتا أبسليوتا والعناكب والأكاروسات، مع انتقال داخل النبات من الجذور إلى الأوراق.',effect:'تركيبة من مادتين: فوسفورية عضوية وكارباماتية، ذات تأثير جهازي وبالملامسة وسم معوي. لم أستخرج جرعة مؤكدة من الملصق؛ اتبع تعليمات العبوة ومعدات الوقاية.',ingredients:'فيناميفوس 20% + أوكساميل 12% وفق بيانات المنتج في الموقع.'},
+88:{lead:'نيماجرو – مبيد نيماتودي وحشري',use:'الملصق يذكر مكافحة النيماتودا التي تصيب الجذور، والحشرات الثاقبة الماصة والتوتا أبسليوتا والعناكب والأكاروسات، مع انتقال داخل النبات من الجذور إلى الأوراق.',effect:'تركيبة من مادتين: فوسفورية عضوية وكارباماتية، ذات تأثير جهازي وبالملامسة وسم معوي. لم أستخرج جرعة مؤكدة من الملصق؛ اتبع تعليمات العبوة ومعدات الوقاية.',ingredients:'المواد الفعالة غير مؤكدة من قراءة الملصق المتاح؛ لا تعتمد تركيزًا غير واضح.'},
 
 1:{lead:'كلوروفوس نيو – مبيد حشري مركب',use:'مبيد حشري لمكافحة آفات وفق المحاصيل المسجلة على العبوة.',effect:'تركيبة من كلوروبيروفوس ودايفينثورون؛ راجع الملصق الأصلي لتحديد الآفات والجرعات وفترة الأمان.',ingredients:'كلوروبيروفوس 47% + دايفينثورون 5%.'},
 2:{lead:'كلوروفوس نيو – مبيد حشري مركب',use:'مبيد حشري لمكافحة آفات وفق المحاصيل المسجلة على العبوة.',effect:'تركيبة من كلوروبيروفوس ودايفينثورون؛ راجع الملصق الأصلي لتحديد الآفات والجرعات وفترة الأمان.',ingredients:'كلوروبيروفوس 47% + دايفينثورون 5%.'},
@@ -174,11 +174,25 @@ const labelInfo={
 39:{lead:'لمبادا ستاك 10% EC',use:'مبيد حشري بالملامسة والهضم. راجع الآفات والمحاصيل المسجلة على العبوة قبل التطبيق.',effect:'واسع المجال قوي المفعول. فترة ما قبل الحصاد المكتوبة: النخيل والذرة الشامية 15 يومًا، والخضروات 7 أيام.',ingredients:'لمبادا سيهالوثرين 10%، ويوفر الملصق أيضًا تركيز 5%.'},
 40:{lead:'لمبادا ستاك 10% EC',use:'مبيد حشري بالملامسة والهضم. راجع الآفات والمحاصيل المسجلة على العبوة قبل التطبيق.',effect:'واسع المجال قوي المفعول. فترة ما قبل الحصاد المكتوبة: النخيل والذرة الشامية 15 يومًا، والخضروات 7 أيام.',ingredients:'لمبادا سيهالوثرين 10%، ويوفر الملصق أيضًا تركيز 5%.'}
 };
+function packageSize(name,en){
+ const n=String(name||'');
+ let size='';
+ if(/مائه|مائة|100\s*(?:مل|ملي)|100ml/i.test(n)) size=en?'100 ml':'100 ملي';
+ else if(/ربع|ربع\s*لتر/i.test(n)) size=en?'Quarter litre':'ربع لتر';
+ else if(/نص|نصف/i.test(n)) size=en?'Half litre':'نصف لتر';
+ else if(/لتر/i.test(n)) size=en?'1 litre':'لتر';
+ else if(/(?:40|50|60|70|100)\s*جرام|جرام/i.test(n)) {const m=n.match(/\d+\s*جرام/); size=m?m[0].replace('جرام','g'):en?'Package weight listed in name':'الوزن الموضح في اسم المنتج';}
+ else if(/كجم|كيلو/i.test(n)) size=en?'Kilogram package':'عبوة كيلو';
+ else size=en?'Package size as listed in product name':'الحجم كما هو مذكور في اسم المنتج';
+ return size;
+}
 function labelPanel(p,en){
  const d=labelInfo[p.id];
  const title=en?'Product label details':'تفاصيل الملصق الخاص بالمنتج';
- if(!d) return '<div class="panel"><h2>'+title+'</h2><p><b>'+(en?'Product-specific registered composition':'التركيب المسجل لهذا المنتج')+':</b></p><div class="composition">'+esc(p.a||(en?'No composition recorded in the catalog.':'لا يوجد تركيب مسجل لهذا المنتج في الكتالوج.'))+'</div><p class="notice">'+(en?'A full transcription of this exact product poster is not available yet. No crop, pest, dose or duration has been invented. Confirm those instructions from the physical package label before use.':'لم تتوفر بعد قراءة كاملة موثقة لصورة ملصق هذا المنتج تحديدًا. لم أختلق محصولًا أو آفة أو جرعة أو مدة تأثير. يُرجى مراجعة الملصق الأصلي على العبوة قبل الاستخدام.')+'</p></div>';
- return '<div class="panel"><h2>'+title+'</h2>'+(d.lead?'<p><b>'+esc(d.lead)+'</b></p>':'')+'<p><b>'+(en?'Use':'الاستخدام')+':</b> '+esc(d.use)+'</p><p><b>'+(en?'Effect':'المفعول')+':</b> '+esc(d.effect)+'</p><p><b>'+(en?'Ingredients stated on the label':'المواد المذكورة على الملصق')+':</b> '+esc(d.ingredients)+'</p><p class="notice">'+(en?'Only the details recorded above have been transcribed; verify dosage and application intervals from the package label.':'المعلومات أعلاه هي المسجلة فقط؛ راجع العبوة لتأكيد الجرعة وفترات الاستخدام.')+'</p></div>';
+ const size=packageSize(p.n,en);
+ const sizeRow='<p><b>'+(en?'Package size':'حجم العبوة')+':</b> '+esc(size)+'</p>';
+ if(!d) return '<div class="panel"><h2>'+title+'</h2>'+sizeRow+'<p><b>'+(en?'Product-specific registered composition':'التركيب المسجل لهذا المنتج')+':</b></p><div class="composition">'+esc(p.a||(en?'No composition recorded in the catalog.':'لا يوجد تركيب مسجل لهذا المنتج في الكتالوج.'))+'</div><p class="notice">'+(en?'No unsupported label details have been added. Confirm crop, pest, dose and safety interval from the physical package label before use.':'لم تتم إضافة تفاصيل غير موثقة. راجع الملصق الأصلي لتأكيد المحصول والآفة والجرعة وفترة الأمان قبل الاستخدام.')+'</p></div>';
+ return '<div class="panel"><h2>'+title+'</h2>'+sizeRow+(d.lead?'<p><b>'+esc(d.lead)+'</b></p>':'')+'<p><b>'+(en?'Use':'الاستخدام')+':</b> '+esc(d.use)+'</p><p><b>'+(en?'Effect':'المفعول')+':</b> '+esc(d.effect)+'</p><p><b>'+(en?'Ingredients stated on the label':'المواد المذكورة على الملصق')+':</b> '+esc(d.ingredients)+'</p><p class="notice">'+(en?'This description is shared across package sizes of the same formulation. Verify any size-specific directions, dosage and safety interval from that exact package label.':'هذا الشرح موحد بين أحجام العبوة التابعة لنفس التركيبة. يجب مراجعة ملصق الحجم المحدد لتأكيد أي اختلاف في التعليمات أو الجرعة أو فترة الأمان.')+'</p></div>';
 }
 
 async function init(){try{
