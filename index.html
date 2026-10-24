@@ -141,7 +141,7 @@ body.hc .toast{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 .product-open{display:block;color:inherit;text-decoration:none;border-radius:10px;cursor:pointer}
 .product-open h3{margin:5px 0 2px;transition:color .18s}
 .product-open:hover h3{color:var(--g)}
-.pi{height:205px;object-fit:contain;background:transparent;border-radius:8px;mix-blend-mode:multiply;filter:drop-shadow(0 14px 9px rgba(0,0,0,.18));animation:productFloat 4.2s ease-in-out infinite}
+.pi{height:205px;object-fit:contain;background:transparent;border-radius:8px;mix-blend-mode:normal;filter:drop-shadow(0 12px 10px rgba(24,55,28,.16));animation:productFloat 4.2s ease-in-out infinite;isolation:isolate}
 .placeholder-product{display:grid;place-items:center;font-size:3.5rem;mix-blend-mode:normal;filter:none;background:linear-gradient(160deg,#f6fbf3,#fff)}
 .detail-hint{display:block;font-size:.78rem;color:var(--mut);margin-top:2px}
 @keyframes productFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
