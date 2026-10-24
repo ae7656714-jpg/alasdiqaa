@@ -18,6 +18,11 @@ header{background:#fff;border-bottom:4px solid var(--yellow);position:sticky;top
 @media(max-width:760px){.layout{grid-template-columns:1fr;gap:16px}.visual{position:relative;top:auto;min-height:300px;max-height:360px}.visual img{height:300px}.bar{padding:8px 12px}.brand img{height:40px}.wrap{padding:18px 13px 34px}.actions .btn{flex:1}.facts{gap:8px}}
 @media(prefers-reduced-motion:reduce){.visual img,.visual:after{animation:none}}
 /* Original bottle artwork stays unfiltered and sharp; floating shadow is separate. */
+
+/* Gentle floating motion for the product image */
+.visual img{animation:detailProductFloat 4.5s ease-in-out infinite;transform-origin:center;will-change:transform}
+@keyframes detailProductFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(.5deg)}}
+@media(prefers-reduced-motion:reduce){.visual img{animation:none;will-change:auto}}
 </style></head><body>
 <header><div class="bar"><a class="brand" href="index.html"><img src="logo-icon.jpg" alt=""><span>الأصدقاء للتجارة والتوريدات</span></a><a class="btn secondary" href="index.html#products" id="backTop">العودة للمنتجات</a></div></header>
 <main class="wrap" id="content"><p>جارٍ تحميل بيانات المنتج…</p></main>
