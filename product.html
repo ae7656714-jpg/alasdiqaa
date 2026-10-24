@@ -174,22 +174,26 @@ const labelInfo={
 39:{lead:'لمبادا ستاك 10% EC',use:'مبيد حشري بالملامسة والهضم. راجع الآفات والمحاصيل المسجلة على العبوة قبل التطبيق.',effect:'واسع المجال قوي المفعول. فترة ما قبل الحصاد المكتوبة: النخيل والذرة الشامية 15 يومًا، والخضروات 7 أيام.',ingredients:'لمبادا سيهالوثرين 10%، ويوفر الملصق أيضًا تركيز 5%.'},
 40:{lead:'لمبادا ستاك 10% EC',use:'مبيد حشري بالملامسة والهضم. راجع الآفات والمحاصيل المسجلة على العبوة قبل التطبيق.',effect:'واسع المجال قوي المفعول. فترة ما قبل الحصاد المكتوبة: النخيل والذرة الشامية 15 يومًا، والخضروات 7 أيام.',ingredients:'لمبادا سيهالوثرين 10%، ويوفر الملصق أيضًا تركيز 5%.'}
 };
-function packageSize(name,en){
- const n=String(name||'');
+function packageSize(p,en){
+ const n=String(p.n||'');
  let size='';
- if(/مائه|مائة|100\s*(?:مل|ملي)|100ml/i.test(n)) size=en?'100 ml':'100 ملي';
+ const solid=Number(p.c)===1;
+ if(/(?:40|50|60|70|100)\s*جرام|جرام/i.test(n)) {const m=n.match(/\d+\s*جرام/); size=m?m[0].replace('جرام','g'):en?'Weight listed in product name':'الوزن الموضح في اسم المنتج';}
+ else if(/كجم|كيلو/i.test(n)) size=en?'Kilogram package':'عبوة كيلو';
+ else if(solid && /مائه|مائة|100/i.test(n)) size=en?'100 g package':'عبوة 100 جرام';
+ else if(solid && /ربع/i.test(n)) size=en?'Quarter-size package':'عبوة ربع حجم';
+ else if(solid && /نص|نصف/i.test(n)) size=en?'Half-size package':'عبوة نصف حجم';
+ else if(/مائه|مائة|100\s*(?:مل|ملي)|100ml/i.test(n)) size=en?'100 ml':'100 ملي';
  else if(/ربع|ربع\s*لتر/i.test(n)) size=en?'Quarter litre':'ربع لتر';
  else if(/نص|نصف/i.test(n)) size=en?'Half litre':'نصف لتر';
  else if(/لتر/i.test(n)) size=en?'1 litre':'لتر';
- else if(/(?:40|50|60|70|100)\s*جرام|جرام/i.test(n)) {const m=n.match(/\d+\s*جرام/); size=m?m[0].replace('جرام','g'):en?'Package weight listed in name':'الوزن الموضح في اسم المنتج';}
- else if(/كجم|كيلو/i.test(n)) size=en?'Kilogram package':'عبوة كيلو';
  else size=en?'Package size as listed in product name':'الحجم كما هو مذكور في اسم المنتج';
  return size;
 }
 function labelPanel(p,en){
  const d=labelInfo[p.id];
  const title=en?'Product label details':'تفاصيل الملصق الخاص بالمنتج';
- const size=packageSize(p.n,en);
+ const size=packageSize(p,en);
  const sizeRow='<p><b>'+(en?'Package size':'حجم العبوة')+':</b> '+esc(size)+'</p>';
  if(!d) return '<div class="panel"><h2>'+title+'</h2>'+sizeRow+'<p><b>'+(en?'Product-specific registered composition':'التركيب المسجل لهذا المنتج')+':</b></p><div class="composition">'+esc(p.a||(en?'No composition recorded in the catalog.':'لا يوجد تركيب مسجل لهذا المنتج في الكتالوج.'))+'</div><p class="notice">'+(en?'No unsupported label details have been added. Confirm crop, pest, dose and safety interval from the physical package label before use.':'لم تتم إضافة تفاصيل غير موثقة. راجع الملصق الأصلي لتأكيد المحصول والآفة والجرعة وفترة الأمان قبل الاستخدام.')+'</p></div>';
  return '<div class="panel"><h2>'+title+'</h2>'+sizeRow+(d.lead?'<p><b>'+esc(d.lead)+'</b></p>':'')+'<p><b>'+(en?'Use':'الاستخدام')+':</b> '+esc(d.use)+'</p><p><b>'+(en?'Effect':'المفعول')+':</b> '+esc(d.effect)+'</p><p><b>'+(en?'Ingredients stated on the label':'المواد المذكورة على الملصق')+':</b> '+esc(d.ingredients)+'</p><p class="notice">'+(en?'This description is shared across package sizes of the same formulation. Verify any size-specific directions, dosage and safety interval from that exact package label.':'هذا الشرح موحد بين أحجام العبوة التابعة لنفس التركيبة. يجب مراجعة ملصق الحجم المحدد لتأكيد أي اختلاف في التعليمات أو الجرعة أو فترة الأمان.')+'</p></div>';
