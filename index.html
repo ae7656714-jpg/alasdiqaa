@@ -260,8 +260,8 @@ for(const p of points){const dx=mx-p.x,dy=my-p.y,dist=Math.hypot(dx,dy)||1;if(di
 p.vx+=(p.ox-p.x)*.0015;p.vy+=(p.oy-p.y)*.0015;p.vx*=.94;p.vy*=.94;p.x+=p.vx;p.y+=p.vy;
 if(p.x<-8)p.x=w+8;if(p.x>w+8)p.x=-8;if(p.y<-8)p.y=h+8;if(p.y>h+8)p.y=-8;
 }
-for(let i=0;i<points.length;i++){const a=points[i];for(let j=i+1;j<points.length;j++){const b=points[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d<link){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle='rgba(18,55,22,'+((1-d/link)*.30)+')';ctx.lineWidth=.7;ctx.stroke()}}}
-for(const p of points){const d=Math.hypot(mx-p.x,my-p.y),glow=Math.max(0,1-d/near);ctx.beginPath();ctx.arc(p.x,p.y,p.r+glow*1.4,0,Math.PI*2);ctx.fillStyle=glow?'rgba(12,58,20,'+(.62+glow*.35)+')':'rgba(25,76,30,.82)';ctx.fill()}
+for(let i=0;i<points.length;i++){const a=points[i];for(let j=i+1;j<points.length;j++){const b=points[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d<link){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle='rgba(5,35,10,'+((1-d/link)*.48)+')';ctx.lineWidth=.7;ctx.stroke()}}}
+for(const p of points){const d=Math.hypot(mx-p.x,my-p.y),glow=Math.max(0,1-d/near);ctx.beginPath();ctx.arc(p.x,p.y,p.r+glow*1.4,0,Math.PI*2);ctx.fillStyle=glow?'rgba(3,28,8,'+(.92+glow*.08)+')':'rgba(5,42,12,1)';ctx.fill()}
 if(!reduce)raf=requestAnimationFrame(draw)}
 draw();})();
 </script></body></html>
