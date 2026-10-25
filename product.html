@@ -201,7 +201,7 @@ function labelPanel(p,en){
  const size=packageSize(p,en);
  const sizeRow='<p><b>'+(en?'Package size':'حجم العبوة')+':</b> '+esc(size)+'</p>';
  if(!d) return '<div class="panel"><h2>'+title+'</h2>'+sizeRow+'<p><b>'+(en?'Product-specific registered composition':'التركيب المسجل لهذا المنتج')+':</b></p><div class="composition">'+esc(p.a||(en?'No composition recorded in the catalog.':'لا يوجد تركيب مسجل لهذا المنتج في الكتالوج.'))+'</div><p class="notice">'+(en?'No unsupported label details have been added. Confirm crop, pest, dose and safety interval from the physical package label before use.':'لم تتم إضافة تفاصيل غير موثقة. راجع الملصق الأصلي لتأكيد المحصول والآفة والجرعة وفترة الأمان قبل الاستخدام.')+'</p></div>';
- return '<div class="panel"><h2>'+title+'</h2>'+sizeRow+(d.lead?'<p><b>'+esc(d.lead)+'</b></p>':'')+'<p><b>'+(en?'Use':'الاستخدام')+':</b> '+esc(d.use)+'</p><p><b>'+(en?'Effect':'المفعول')+':</b> '+esc(d.effect)+'</p><p><b>'+(en?'Ingredients':'المواد')+':</b> '+esc(d.ingredients)+'</p><p class="notice">'+(en?'This description is shared across package sizes of the same formulation. Verify any size-specific directions, dosage and safety interval from that exact package label.':'هذا الشرح موحد بين أحجام العبوة التابعة لنفس التركيبة. يجب مراجعة ملصق الحجم المحدد لتأكيد أي اختلاف في التعليمات أو الجرعة أو فترة الأمان.')+'</p></div>';
+ return '<div class="panel"><h2>'+title+'</h2>'+sizeRow+(d.lead?'<p><b>'+esc(d.lead)+'</b></p>':'')+'<p><b>'+(en?'Use':'الاستخدام')+':</b> '+esc(d.use)+'</p><p><b>'+(en?'Effect':'المفعول')+':</b> '+esc(d.effect)+'</p><p><b>'+(en?'Ingredients':'المواد')+':</b> '+esc(d.ingredients)+'</p></div>';
 }
 
 async function init(){try{
