@@ -13,9 +13,7 @@
 html{scroll-behavior:smooth;scroll-padding-top:calc(84px + env(safe-area-inset-top,0px))}
 html{background:var(--bg)}
 body{margin:0;font-family:Cairo,system-ui,"Segoe UI",Tahoma,sans-serif;background:transparent;color:var(--fg);line-height:1.6;position:relative;isolation:isolate;min-height:100vh}
-body::before{content:"";position:fixed;inset:-18%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 15% 25%,rgba(76,175,40,.22),transparent 32%),radial-gradient(ellipse at 82% 18%,rgba(255,193,7,.16),transparent 28%),radial-gradient(ellipse at 72% 78%,rgba(11,122,34,.18),transparent 34%),radial-gradient(ellipse at 18% 85%,rgba(166,227,111,.20),transparent 30%),linear-gradient(125deg,var(--bg),#edf7e8,var(--bg));background-size:140% 140%;animation:siteBgDrift 24s ease-in-out infinite alternate}
-@keyframes siteBgDrift{0%{background-position:0% 0%;transform:translate3d(-1%,0,0) scale(1)}50%{background-position:55% 45%;transform:translate3d(1%,1%,0) scale(1.025)}100%{background-position:100% 100%;transform:translate3d(0,-1%,0) scale(1)}}
-@media(prefers-reduced-motion:reduce){body::before{animation:none}}
+
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--o);outline-offset:2px}
 .w{max-width:1180px;margin:auto;padding:0 16px}
@@ -252,4 +250,19 @@ $('#sel').onchange=e=>{cat=+e.target.value;renderCats();renderProducts()};
 $('#send').onclick=send;$('#cbSend').onclick=send;$('#cbOpen').onclick=()=>drawer(true);
 Promise.resolve(DATA).then(d=>{P=d;P.forEach(p=>{p.s=norm(p.n+' '+(p.ne||'')+' '+p.a);if(sc[p.id]>0)cart[p.id]=Math.floor(sc[p.id])});setLang(lang)}).catch(()=>{$('#grid').innerHTML='<p class="empty">⚠️</p>'});
 setLang(lang);
+</script><script>
+(()=>{const c=document.createElement('canvas');c.id='grass-background';c.setAttribute('aria-hidden','true');Object.assign(c.style,{position:'fixed',inset:'0',width:'100%',height:'100%',zIndex:'-1',pointerEvents:'none'});document.body.prepend(c);
+const ctx=c.getContext('2d');let w=0,h=0,dpr=1,blades=[],mx=-9999,my=-9999,clicks=[],raf=0;
+function resize(){dpr=Math.min(window.devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);blades=[];const spacing=w<600?19:25;for(let x=-10;x<w+spacing;x+=spacing){for(let y=h-3;y>-h*.12;y-=spacing*(.82+Math.random()*.42)){blades.push({x:x+(Math.random()-.5)*spacing*.7,y:y+(Math.random()-.5)*spacing*.5,len:10+Math.random()*(w<600?15:22),width:1+Math.random()*1.8,phase:Math.random()*6.28,sway:(Math.random()-.5)*.2,hue:95+Math.random()*40,light:22+Math.random()*22})}}}
+function pointer(e){const p=e.touches?e.touches[0]:e;mx=p.clientX;my=p.clientY}
+function click(e){const p=e.changedTouches?e.changedTouches[0]:e;clicks.push({x:p.clientX,y:p.clientY,t:performance.now()});if(clicks.length>8)clicks.shift();mx=p.clientX;my=p.clientY}
+addEventListener('resize',resize,{passive:true});addEventListener('pointermove',pointer,{passive:true});addEventListener('pointerdown',click,{passive:true});addEventListener('touchstart',pointer,{passive:true});resize();
+function draw(t){ctx.clearRect(0,0,w,h);
+for(const b of blades){const dx=b.x-mx,dy=b.y-my,dist=Math.hypot(dx,dy),influence=Math.max(0,1-dist/145),wind=Math.sin(t*.0007+b.phase)*9+Math.sin(t*.0012+b.x*.015)*4,lean=wind+b.sway*18+ (influence?Math.sign(dx||1)*influence*24:0);
+const swayY=Math.sin(t*.001+b.phase)*2;ctx.beginPath();ctx.moveTo(b.x,b.y);ctx.quadraticCurveTo(b.x+lean*.25,b.y-b.len*.55,b.x+lean,b.y-b.len);ctx.strokeStyle='hsla('+b.hue+',65%,'+(b.light+influence*13)+'%,.78)';ctx.lineWidth=b.width;ctx.lineCap='round';ctx.stroke();
+if(b.len>18){ctx.beginPath();ctx.moveTo(b.x+lean*.4,b.y-b.len*.55);ctx.quadraticCurveTo(b.x+lean*.4-5,b.y-b.len*.72,b.x+lean*.4-10,b.y-b.len*.72);ctx.strokeStyle='hsla('+b.hue+',60%,'+(b.light+8)+'%,.55)';ctx.lineWidth=b.width*.7;ctx.stroke()}}
+const now=performance.now();clicks=clicks.filter(r=>now-r.t<1000);for(const r of clicks){const age=(now-r.t)/1000;ctx.beginPath();ctx.arc(r.x,r.y,10+age*115,0,Math.PI*2);ctx.strokeStyle='rgba(76,150,46,'+(1-age)*.55+')';ctx.lineWidth=2;ctx.stroke()}
+raf=requestAnimationFrame(draw)}
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches)raf=requestAnimationFrame(draw);else draw(0);
+})();
 </script></body></html>
