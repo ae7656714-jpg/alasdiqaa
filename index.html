@@ -235,7 +235,7 @@ renderCats();renderProducts();renderCart();$('#err').textContent=''}
 const waUrl=m=>'https://wa.me/'+CFG.wa+'?text='+encodeURIComponent(m);
 function send(){
 const ids=Object.keys(cart),nm=$('#fn').value.trim(),ph=$('#fp').value.trim(),ad=$('#fa').value.trim(),nt=$('#fnote').value.trim();
-const err=!ids.length?t('e_cart'):!nm?t('e_name'):!/^\\+?[\\d\\s()-]{8,}$/.test(ph)?t('e_phone'):!ad?t('e_address'):'';
+const err=!ids.length?t('e_cart'):!nm?t('e_name'):!/^\+?[\d\s()-]{8,}$/.test(ph)?t('e_phone'):!ad?t('e_address'):'';
 $('#err').textContent=err;if(err){drawer(true);return}let tot=0;
 const L=ids.map((id,i)=>{const p=P.find(x=>x.id==id),q=cart[id];tot+=p.p*q;return (i+1)+'. '+p.n+' × '+q+' = '+fmt(p.p*q)+' '+cur()});
 const msg=[t('wa'),' ',t('name')+': '+nm,t('phone')+': '+ph,t('address')+': '+ad,'',...L,'',t('total')+': '+fmt(tot)+' '+cur(),...(nt?['',t('note')+': '+nt]:[])].join('\n');
