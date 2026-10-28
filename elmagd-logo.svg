@@ -8,6 +8,7 @@
  <linearGradient id="red" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff2637"/><stop offset="1" stop-color="#b40017"/></linearGradient>
  <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity=".22"/></filter>
 </defs>
+<rect width="900" height="650" rx="30" fill="#000000"/>
 
 <g filter="url(#shadow)">
  <path d="M115 250 A215 215 0 0 1 535 250 L470 302 L330 330 L160 300 Z" fill="url(#sun)" stroke="#ffb300" stroke-width="8"/>
