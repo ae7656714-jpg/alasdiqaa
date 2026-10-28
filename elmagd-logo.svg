@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" role="img" aria-labelledby="title desc">
+<title id="title">شركة المجد - EL MAGD</title><desc id="desc">تصنيع وتجارة الكيماويات الزراعية</desc>
+<defs>
+ <linearGradient id="sun" x1="0" y1="0" x2="0.8" y2="1"><stop stop-color="#ffdc00"/><stop offset=".48" stop-color="#ff8a00"/><stop offset="1" stop-color="#e53912"/></linearGradient>
+ <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8cff20"/><stop offset=".5" stop-color="#28c52e"/><stop offset="1" stop-color="#007b24"/></linearGradient>
+ <linearGradient id="greenText" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#60ff18"/><stop offset=".6" stop-color="#12bd20"/><stop offset="1" stop-color="#006e20"/></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff2637"/><stop offset="1" stop-color="#b40017"/></linearGradient>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity=".22"/></filter>
+</defs>
+<rect width="900" height="650" rx="30" fill="#fffdf5"/>
+<g filter="url(#shadow)">
+ <path d="M115 250 A215 215 0 0 1 535 250 L470 302 L330 330 L160 300 Z" fill="url(#sun)" stroke="#ffb300" stroke-width="8"/>
+ <path d="M128 252 A202 202 0 0 1 522 252" fill="none" stroke="#fff12b" stroke-width="8"/>
+ <g fill="#fff" stroke="#f5f5f5" stroke-width="2">
+  <path d="M280 300 L280 150 M280 188 C244 163 250 127 280 100 C310 127 316 163 280 188Z"/>
+  <path d="M276 215 C238 213 222 191 222 165 C251 169 274 186 276 215Z"/>
+  <path d="M284 244 C322 242 339 218 338 192 C309 197 286 214 284 244Z"/>
+  <path d="M276 270 C240 267 222 246 223 222 C251 226 273 243 276 270Z"/>
+  <path d="M284 292 C320 289 338 267 338 243 C309 248 287 265 284 292Z"/>
+  <path d="M390 295 L390 150 M390 188 C356 163 361 128 390 102 C420 128 426 163 390 188Z"/>
+  <path d="M386 215 C350 212 333 191 334 167 C361 171 384 187 386 215Z"/>
+  <path d="M394 243 C430 241 447 219 447 195 C418 199 397 216 394 243Z"/>
+  <path d="M386 270 C350 267 334 246 334 224 C361 228 384 244 386 270Z"/>
+ </g>
+ <path d="M500 286 C590 225 646 168 740 120 C730 202 687 275 604 321 C570 333 531 319 500 286Z" fill="url(#leaf)" stroke="#008b31" stroke-width="5"/>
+ <path d="M590 305 Q645 230 705 157" stroke="#075a20" stroke-width="7" fill="none"/>
+ <path d="M508 290 C553 285 583 299 612 325 C564 338 527 324 508 290Z" fill="url(#leaf)" stroke="#008b31" stroke-width="4"/>
+</g>
+<text x="740" y="320" text-anchor="middle" font-family="Cairo,Arial,sans-serif" font-size="47" font-weight="800" fill="#1dbd28" direction="rtl">شركة</text>
+<text x="450" y="405" text-anchor="middle" font-family="Cairo,Arial,sans-serif" font-size="112" font-weight="900" fill="url(#greenText)" stroke="#007523" stroke-width="2" paint-order="stroke" direction="rtl">المجد</text>
+<rect x="120" y="425" width="660" height="105" rx="22" fill="url(#red)" stroke="#ff5a61" stroke-width="5"/>
+<text x="450" y="500" text-anchor="middle" font-family="Arial,sans-serif" font-size="75" font-weight="900" letter-spacing="2" fill="#fff">EL <tspan fill="#ffe500" font-style="italic">M</tspan>AGD</text>
+<text x="450" y="585" text-anchor="middle" font-family="Cairo,Arial,sans-serif" font-size="39" font-weight="800" fill="#18b52a" direction="rtl">تصنيع وتجارة الكيماويات الزراعية</text>
+</svg>
