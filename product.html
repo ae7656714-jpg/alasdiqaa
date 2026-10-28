@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0e3d1f"><title>تفاصيل المنتج | الأصدقاء للتجارة والتوريدات</title>
+<meta name="theme-color" content="#0b7026"><title>تفاصيل المنتج | شركة المجد للكيماويات الزراعية</title>
 <link rel="icon" href="icon.png"><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--green:#0e3d1f;--leaf:#0b7a22;--yellow:#ffc107;--bg:#f8fbf6;--fg:#17251b;--muted:#617064;--line:#dce8d5;--card:#fff}
+:root{--green:#075321;--leaf:#16872d;--yellow:#ffdf00;--bg:#fffdf7;--fg:#17311d;--muted:#5b6c5d;--line:#e8e0cb;--card:#fff}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;font-family:Cairo,system-ui,Tahoma,sans-serif;background:transparent;color:var(--fg);line-height:1.7;position:relative;isolation:isolate;min-height:100vh}
 
 header{background:#fff;border-bottom:4px solid var(--yellow);position:sticky;top:0;z-index:5}.bar{max-width:1100px;margin:auto;padding:10px 18px;display:flex;align-items:center;gap:14px}.brand{display:flex;align-items:center;gap:10px;color:var(--green);text-decoration:none;font-weight:800;margin-inline-end:auto}.brand img{height:46px;width:auto}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:11px;padding:10px 17px;background:var(--leaf);color:#fff;text-decoration:none;font:inherit;font-weight:800;cursor:pointer}.btn.secondary{background:#fff;color:var(--green);border:1px solid var(--line)}.btn.wa{background:#25d366;color:#083d1b}
@@ -24,10 +24,19 @@ header{background:#fff;border-bottom:4px solid var(--yellow);position:sticky;top
 .visual img{animation:detailProductFloat 4.5s ease-in-out infinite;transform-origin:center;will-change:transform}
 @keyframes detailProductFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(.5deg)}}
 @media(prefers-reduced-motion:reduce){.visual img{animation:none;will-change:auto}}
+
+/* EL MAGD logo palette */
+header{background:#fffdf7;border-bottom:4px solid #ffdf00}
+.brand{color:#16872d}
+.visual{background:radial-gradient(ellipse at 50% 76%,rgba(22,135,45,.10),transparent 52%),linear-gradient(160deg,#fffdf7,#fff5df);border-color:#e8e0cb}
+.kicker{color:#087326;background:#f2f8e7}
+h1,.panel h2,.fact b{color:#075321}
+.price,.back{color:#16872d}
+footer{background:#063d1a;border-top:4px solid #ffdf00}
 </style></head><body>
-<header><div class="bar"><a class="brand" href="index.html"><img src="logo-icon.jpg" alt=""><span>الأصدقاء للتجارة والتوريدات</span></a><a class="btn secondary" href="index.html#products" id="backTop">العودة للمنتجات</a></div></header>
+<header><div class="bar"><a class="brand" href="index.html"><img src="elmagd-icon.svg" alt=""><span>شركة المجد لتصنيع وتجارة الكيماويات الزراعية</span></a><a class="btn secondary" href="index.html#products" id="backTop">العودة للمنتجات</a></div></header>
 <main class="wrap" id="content"><p>جارٍ تحميل بيانات المنتج…</p></main>
-<footer>الأصدقاء للتجارة والتوريدات · <a href="https://wa.me/201127553859" style="color:#baf4c9">واتساب 01127553859</a></footer>
+<footer>شركة المجد لتصنيع وتجارة الكيماويات الزراعية · <a href="https://wa.me/201127553859" style="color:#baf4c9">واتساب 01127553859</a></footer>
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const id=Number(new URLSearchParams(location.search).get('id'));
@@ -209,7 +218,7 @@ async function init(){try{
 const res=await fetch('index.html',{cache:'no-store'});if(!res.ok)throw 0;const source=await res.text();const match=source.match(/const DATA=(\[[\s\S]*?\]);\s*const CFG=/);if(!match)throw 0;
 const products=JSON.parse(match[1]);const p=products.find(x=>x.id===id);if(!p)throw 0;
 const en=lang==='en',title=en&&p.ne?p.ne:p.n,category=names[p.c]?.[en?1:0]||'';
-document.documentElement.lang=en?'en':'ar';document.documentElement.dir=en?'ltr':'rtl';document.title=title+' | '+(en?'Al Asdiqaa':'الأصدقاء');
+document.documentElement.lang=en?'en':'ar';document.documentElement.dir=en?'ltr':'rtl';document.title=title+' | '+(en?'EL MAGD':'الأصدقاء');
 $('#backTop').textContent=en?'Back to products':'العودة للمنتجات';
 const description=p.description||'';
 const composition=p.a|| (en?'No active ingredients are listed for this item.':'لا توجد مواد فعالة مسجلة لهذا المنتج في الكتالوج.');
