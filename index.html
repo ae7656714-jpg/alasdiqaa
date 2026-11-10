@@ -71,7 +71,7 @@ html[dir=ltr] .ar{display:block;text-align:left}
 .ing{margin:0;font-size:.88rem;color:var(--mut)}.ing>span:first-child{display:block;font-weight:700;color:var(--fg)}
 .ctn{margin:0;font-size:.88rem;color:var(--mut)}
 .buy{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:10px;gap:8px}
-.price{font-size:1.3rem;font-weight:800;color:var(--gt)}.price small{font-size:.8rem;color:var(--mut);font-weight:600}
+.price,.product-price,[class*='price']{display:none!important}
 .qty{display:flex;align-items:center;gap:4px;background:var(--tint);border-radius:10px;padding:3px}
 .qty button{width:34px;height:34px;border:0;border-radius:8px;background:var(--g);color:#fff;font-size:1.2rem;cursor:pointer}
 .qty b{min-width:30px;text-align:center}
@@ -177,7 +177,7 @@ footer{background:#063d1a;border-top-color:#ffdf00}
 .step i{background:#ffdf00;color:#3a2a00}
 .badge{background:#ffdf00;color:#3a2a00}
 .product-open:hover h3{color:#16872d}
-</style></head><body>
+/* إخفاء أي أسعار قديمة أو متبقية في بطاقات المنتجات */\n.price,.product-price,[class*='price']{display:none!important}\n</style></head><body>
 <header><div class="bar">
 <a class="brand" href="#home"><img src="Glossy Elmagd Agricultural Logo.png" alt="شعار شركة المجد لتصنيع وتجارة الكيماويات الزراعية" width="70" height="54"><span><b data-t="brand"></b><small data-t="brand2"></small></span></a>
 <nav><a href="#home" data-t="nav1"></a><a href="#products" data-t="nav2"></a><a href="#how" data-t="nav3"></a><a href="#contact" data-t="nav4"></a></nav>
