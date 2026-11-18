@@ -40,6 +40,14 @@ button:disabled{opacity:.55;cursor:wait}.hidden{display:none!important}
 </section>
 <section id="app" class="hidden">
 <div class="panel">
+ <div class="top"><h2>البحث عن منتج وتعديله</h2><button id="productRefresh" class="secondary" type="button">عرض كل المنتجات</button></div>
+ <form id="productSearchForm" class="row" style="margin-bottom:12px">
+  <input id="productSearch" type="search" placeholder="اكتب اسم المنتج للبحث..." style="flex:1;margin:6px 0">
+  <button type="submit">بحث</button>
+ </form>
+ <div id="productsList" class="muted">اكتب اسم المنتج ثم اضغط بحث.</div>
+</div>
+<div class="panel">
 <h2 id="formTitle">إضافة محتوى جديد</h2>
 <form id="contentForm">
 <input id="recordId" type="hidden">
@@ -71,14 +79,7 @@ button:disabled{opacity:.55;cursor:wait}.hidden{display:none!important}
  </form>
  <div id="productMsg" class="notice hidden" role="status"></div>
 </div>
-<div class="panel">
- <div class="top"><h2>البحث عن منتج وتعديله</h2><button id="productRefresh" class="secondary" type="button">عرض كل المنتجات</button></div>
- <form id="productSearchForm" class="row" style="margin-bottom:12px">
-  <input id="productSearch" type="search" placeholder="اكتب اسم المنتج للبحث..." style="flex:1;margin:6px 0">
-  <button type="submit">بحث</button>
- </form>
- <div id="productsList" class="muted">اكتب اسم المنتج ثم اضغط بحث.</div>
-</div>
+
 </section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
