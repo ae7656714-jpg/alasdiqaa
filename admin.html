@@ -21,6 +21,8 @@ button:disabled{opacity:.55;cursor:wait}.hidden{display:none!important}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.searchBar{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.searchBar input{margin:0}
 @media(max-width:650px){body{padding:12px}.grid{grid-template-columns:1fr}header,.panel{padding:16px}}
 </style>
 </head>
@@ -40,14 +42,6 @@ button:disabled{opacity:.55;cursor:wait}.hidden{display:none!important}
 </section>
 <section id="app" class="hidden">
 <div class="panel">
- <div class="top"><h2>البحث عن منتج وتعديله</h2><button id="productRefresh" class="secondary" type="button">عرض كل المنتجات</button></div>
- <form id="productSearchForm" class="row" style="margin-bottom:12px">
-  <input id="productSearch" type="search" placeholder="اكتب اسم المنتج للبحث..." style="flex:1;margin:6px 0">
-  <button type="submit">بحث</button>
- </form>
- <div id="productsList" class="muted">اكتب اسم المنتج ثم اضغط بحث.</div>
-</div>
-<div class="panel">
 <h2 id="formTitle">إضافة محتوى جديد</h2>
 <form id="contentForm">
 <input id="recordId" type="hidden">
@@ -61,25 +55,14 @@ button:disabled{opacity:.55;cursor:wait}.hidden{display:none!important}
 <div class="actions"><button id="saveBtn" type="submit">حفظ المحتوى</button><button id="cancelBtn" type="button" class="secondary">إلغاء التعديل</button></div>
 </form><div id="appMsg" class="notice hidden" role="status"></div>
 </div>
-<div class="panel"><div class="top"><h2>المحتوى المسجل</h2><button id="refresh" class="secondary">تحديث القائمة</button></div><div id="records" class="muted">جارٍ التحميل...</div></div>
-
-<div class="panel" id="productsPanel">
- <div class="top"><h2>إدارة المنتجات</h2><span class="muted">إضافة وتعديل وحذف المنتجات داخل لوحة المدير فقط</span></div>
- <form id="productForm">
-  <input id="productId" type="hidden">
-  <div class="grid">
-   <div><label for="productName">اسم المنتج</label><input id="productName" maxlength="180" required placeholder="اسم المنتج"></div>
-   <div><label for="productCategory">التصنيف</label><input id="productCategory" maxlength="120" placeholder="التصنيف"></div>
-  </div>
-  <label for="productDescription">الوصف التعريفي</label>
-  <textarea id="productDescription" placeholder="وصف تعريفي عام للمنتج، دون جرعات أو تعليمات استخدام"></textarea>
-  <label for="productImage">رابط صورة المنتج (اختياري)</label><input id="productImage" type="url" placeholder="https://...">
-  <label class="row" style="font-weight:400"><input id="productPublished" type="checkbox" style="width:auto;margin:0"> المنتج منشور</label>
-  <div class="actions"><button id="productSaveBtn" type="submit">إضافة المنتج</button><button id="productCancelBtn" type="button" class="secondary">إلغاء</button></div>
- </form>
- <div id="productMsg" class="notice hidden" role="status"></div>
+<div class="panel">
+<div class="top"><h2>المحتوى المسجل</h2><button id="refresh" class="secondary">تحديث القائمة</button></div>
+<div class="searchBar">
+<input id="searchBox" type="search" placeholder="ابحث بالعنوان أو القسم...">
+<button id="clearSearch" class="secondary" type="button">مسح</button>
 </div>
-
+<div id="records" class="muted">جارٍ التحميل...</div>
+</div>
 </section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -88,6 +71,7 @@ const SUPABASE_URL = 'https://aaozutwwkovfgexpwpxp.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_7QRsdtQgg5xXR5GblDOkpQ_qwhA1A8x';
 const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
+let allRecords = [];
 function message(id,text){$(id).textContent=text;$(id).classList.remove('hidden')}
 function clearMessage(id){$(id).textContent='';$(id).classList.add('hidden')}
 function showApp(on){$('login').classList.toggle('hidden',on);$('app').classList.toggle('hidden',!on);$('logout').classList.toggle('hidden',!on)}
@@ -97,7 +81,7 @@ async function verifyAdmin(){
  if(!user){showApp(false);return false}
  const {data,error}=await client.from('admin_users').select('user_id').eq('user_id',user.id).maybeSingle();
  if(error||!data){await client.auth.signOut();showApp(false);message('loginMsg','هذا الحساب غير مسجل كمدير للموقع.');return false}
- showApp(true);await loadRecords();await loadProducts();return true;
+ showApp(true);await loadRecords();return true;
 }
 $('loginForm').addEventListener('submit',async e=>{
  e.preventDefault();clearMessage('loginMsg');$('loginBtn').disabled=true;
@@ -111,9 +95,13 @@ async function loadRecords(){
  $('records').textContent='جارٍ التحميل...';
  const {data,error}=await client.from('site_content').select('*').order('created_at',{ascending:false});
  if(error){$('records').textContent='تعذر تحميل المحتوى: '+error.message;return}
+ allRecords = data || [];
+ renderRecords(allRecords);
+}
+function renderRecords(list){
  $('records').replaceChildren();
- if(!data.length){$('records').textContent='لا يوجد محتوى حتى الآن.';return}
- data.forEach(item=>{
+ if(!list.length){$('records').textContent='لا يوجد محتوى مطابق.';return}
+ list.forEach(item=>{
   const card=document.createElement('article');card.className='item';
   const h=document.createElement('h3');h.textContent=item.title||item.section_key;
   const meta=document.createElement('div');meta.className='muted';meta.textContent='القسم: '+item.section_key+' — '+(item.is_published?'منشور':'مسودة');
@@ -126,6 +114,18 @@ async function loadRecords(){
   actions.append(edit,del);card.append(actions);$('records').append(card);
  });
 }
+function applySearch(){
+ const q=$('searchBox').value.trim().toLowerCase();
+ if(!q){renderRecords(allRecords);return}
+ const filtered=allRecords.filter(item=>
+   (item.title||'').toLowerCase().includes(q) ||
+   (item.section_key||'').toLowerCase().includes(q) ||
+   (item.body||'').toLowerCase().includes(q)
+ );
+ renderRecords(filtered);
+}
+$('searchBox').addEventListener('input',applySearch);
+$('clearSearch').addEventListener('click',()=>{$('searchBox').value='';renderRecords(allRecords)});
 function editRecord(item){$('recordId').value=item.id;$('section').value=item.section_key;$('title').value=item.title||'';$('body').value=item.body||'';$('image').value=item.image_url||'';$('published').checked=!!item.is_published;$('formTitle').textContent='تعديل المحتوى';$('saveBtn').textContent='حفظ التعديلات';window.scrollTo({top:0,behavior:'smooth'})}
 $('contentForm').addEventListener('submit',async e=>{
  e.preventDefault();clearMessage('appMsg');$('saveBtn').disabled=true;
@@ -140,82 +140,6 @@ $('contentForm').addEventListener('submit',async e=>{
 async function deleteRecord(id){if(!confirm('هل تريد حذف هذا المحتوى؟'))return;const {error}=await client.from('site_content').delete().eq('id',id);if(error){message('appMsg','تعذر الحذف: '+error.message);return}message('appMsg','تم حذف المحتوى.');await loadRecords()}
 $('cancelBtn').addEventListener('click',resetForm);
 $('refresh').addEventListener('click',loadRecords);
-
-function resetProductForm(){
- $('productForm').reset();$('productId').value='';
- $('productSaveBtn').textContent='إضافة المنتج';
-}
-function productMessage(text){
- $('productMsg').textContent=text;$('productMsg').classList.remove('hidden');
-}
-async function loadProducts(searchTerm=''){
- $('productsList').textContent='جارٍ البحث عن المنتجات...';
- let request=client.from('products').select('*').order('created_at',{ascending:false});
- if(searchTerm.trim()) request=request.ilike('name','%'+searchTerm.trim()+'%');
- const {data,error}=await request;
- if(error){$('productsList').textContent='تعذر تحميل المنتجات: '+error.message;return}
- $('productsList').replaceChildren();
- if(!data.length){$('productsList').textContent=searchTerm.trim()?'لم يتم العثور على منتج بهذا الاسم.':'لا توجد منتجات مسجلة حتى الآن.';return}
- data.forEach(item=>{
-  const card=document.createElement('article');card.className='item';
-  const h=document.createElement('h3');h.textContent=item.name||'منتج بدون اسم';
-  const meta=document.createElement('div');meta.className='muted';
-  meta.textContent='التصنيف: '+(item.category||'غير محدد')+' — '+(item.is_published?'منشور':'غير منشور');
-  card.append(h,meta);
-  if(item.description){const p=document.createElement('p');p.textContent=item.description;card.append(p)}
-  if(item.image_url){
-   const a=document.createElement('a');a.href=item.image_url;a.target='_blank';a.rel='noopener';a.textContent='فتح صورة المنتج';card.append(a);
-  }
-  const actions=document.createElement('div');actions.className='actions';
-  const edit=document.createElement('button');edit.className='secondary';edit.textContent='تعديل';
-  edit.onclick=()=>editProduct(item);
-  const del=document.createElement('button');del.className='danger';del.textContent='حذف';
-  del.onclick=()=>deleteProduct(item.id);
-  actions.append(edit,del);card.append(actions);$('productsList').append(card);
- });
-}
-function editProduct(item){
- $('productId').value=item.id;
- $('productName').value=item.name||'';
- $('productCategory').value=item.category||'';
- $('productDescription').value=item.description||'';
- $('productImage').value=item.image_url||'';
- $('productPublished').checked=!!item.is_published;
- $('productSaveBtn').textContent='حفظ التعديلات';
- $('productsPanel').scrollIntoView({behavior:'smooth',block:'start'});
-}
-$('productForm').addEventListener('submit',async e=>{
- e.preventDefault();$('productSaveBtn').disabled=true;
- const payload={
-  name:$('productName').value.trim(),
-  category:$('productCategory').value.trim()||null,
-  description:$('productDescription').value.trim()||null,
-  image_url:$('productImage').value.trim()||null,
-  is_published:$('productPublished').checked,
-  updated_at:new Date().toISOString()
- };
- let result;
- if($('productId').value) result=await client.from('products').update(payload).eq('id',Number($('productId').value));
- else result=await client.from('products').insert(payload);
- $('productSaveBtn').disabled=false;
- if(result.error){productMessage('تعذر حفظ المنتج: '+result.error.message);return}
- productMessage('تم حفظ المنتج بنجاح.');
- resetProductForm();await loadProducts();
-});
-async function deleteProduct(id){
- if(!confirm('هل تريد حذف هذا المنتج نهائيًا؟'))return;
- const {error}=await client.from('products').delete().eq('id',id);
- if(error){productMessage('تعذر حذف المنتج: '+error.message);return}
- productMessage('تم حذف المنتج.');await loadProducts();
-}
-$('productCancelBtn').addEventListener('click',resetProductForm);
-$('productSearchForm').addEventListener('submit',e=>{
- e.preventDefault();loadProducts($('productSearch').value);
-});
-$('productRefresh').addEventListener('click',()=>{
- $('productSearch').value='';loadProducts('');
-});
-
 client.auth.onAuthStateChange((_event,session)=>{if(!session)showApp(false)});
 verifyAdmin();
 </script>
