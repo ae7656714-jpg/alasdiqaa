@@ -71,7 +71,14 @@ button:disabled{opacity:.55;cursor:wait}.hidden{display:none!important}
  </form>
  <div id="productMsg" class="notice hidden" role="status"></div>
 </div>
-<div class="panel"><div class="top"><h2>قائمة المنتجات</h2><button id="productRefresh" class="secondary">تحديث القائمة</button></div><div id="productsList" class="muted">جارٍ التحميل...</div></div>
+<div class="panel">
+ <div class="top"><h2>البحث عن منتج وتعديله</h2><button id="productRefresh" class="secondary" type="button">عرض كل المنتجات</button></div>
+ <form id="productSearchForm" class="row" style="margin-bottom:12px">
+  <input id="productSearch" type="search" placeholder="اكتب اسم المنتج للبحث..." style="flex:1;margin:6px 0">
+  <button type="submit">بحث</button>
+ </form>
+ <div id="productsList" class="muted">اكتب اسم المنتج ثم اضغط بحث.</div>
+</div>
 </section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -140,12 +147,14 @@ function resetProductForm(){
 function productMessage(text){
  $('productMsg').textContent=text;$('productMsg').classList.remove('hidden');
 }
-async function loadProducts(){
- $('productsList').textContent='جارٍ التحميل...';
- const {data,error}=await client.from('products').select('*').order('created_at',{ascending:false});
+async function loadProducts(searchTerm=''){
+ $('productsList').textContent='جارٍ البحث عن المنتجات...';
+ let request=client.from('products').select('*').order('created_at',{ascending:false});
+ if(searchTerm.trim()) request=request.ilike('name','%'+searchTerm.trim()+'%');
+ const {data,error}=await request;
  if(error){$('productsList').textContent='تعذر تحميل المنتجات: '+error.message;return}
  $('productsList').replaceChildren();
- if(!data.length){$('productsList').textContent='لا توجد منتجات مسجلة حتى الآن.';return}
+ if(!data.length){$('productsList').textContent=searchTerm.trim()?'لم يتم العثور على منتج بهذا الاسم.':'لا توجد منتجات مسجلة حتى الآن.';return}
  data.forEach(item=>{
   const card=document.createElement('article');card.className='item';
   const h=document.createElement('h3');h.textContent=item.name||'منتج بدون اسم';
@@ -199,7 +208,12 @@ async function deleteProduct(id){
  productMessage('تم حذف المنتج.');await loadProducts();
 }
 $('productCancelBtn').addEventListener('click',resetProductForm);
-$('productRefresh').addEventListener('click',loadProducts);
+$('productSearchForm').addEventListener('submit',e=>{
+ e.preventDefault();loadProducts($('productSearch').value);
+});
+$('productRefresh').addEventListener('click',()=>{
+ $('productSearch').value='';loadProducts('');
+});
 
 client.auth.onAuthStateChange((_event,session)=>{if(!session)showApp(false)});
 verifyAdmin();
